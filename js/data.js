@@ -7,7 +7,7 @@ const products = [
     model: "Xiaomi",
     addedDate: new Date("2021-11-12").toISOString(),
     benefits: ["8gb", "128gb", "Waterproof"]
-  },
+  },  
   {
     id: 124,
     title: "Samgung Note 20 Ultra",
