@@ -97,7 +97,7 @@ for (let i = 0; i < products.length; i++) {
 
 
 const addForm = document.querySelector("#modal-form");
-const formSelect = document.querySelector("#productmanufacturer");
+const formSelect = document.querySelector("#product-manufacturer");
 const addProductModalEl = document.querySelector("#edit-student-modal");
 const addProductModal = new bootstrap.Modal(addProductModalEl);
 for (let i = 0; i < manufacturers.length; i++) {
