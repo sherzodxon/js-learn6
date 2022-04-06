@@ -47,7 +47,7 @@ const renderProduct = function (product) {
     const productTextOne = createElement("p", "text fw-bocardld", SUM, "");
     const productTextDel = createElement("s", "", " 2.000.000 so'm", "");
     const productTextTwo = createElement("p", "card-text", "", "");
-    const productTextThree = createElement("p", "badge bg-success", currentProduct.model, "");
+    const productTextThree = createElement("p", "badge bg-success", model, "");
     const productTextDate = createElement("p", "card-text", showDate(addedDate), "");
 
     productTextTwo.append(productTextDel);
@@ -68,9 +68,13 @@ const renderProduct = function (product) {
 
     const productButDiv = createElement("div", "position-absolute top-0 end-0 d-flex", "", "");
     const productButMark = createElement("button", "btn rounded-0 btn-secondary", "", "");
+    productButMark.setAttribute("data-editing", id);
+    productButMark.setAttribute("data-bs-toggle", "modal");
+    productButMark.setAttribute("data-bs-target", "#edit-product-modal");
     const productButDel = createElement("button", "btn rounded-0 btn-danger", "", "");
     productButDel.setAttribute("data-delete", id);
     const productButIMark = createElement("i", "fa-solid fa-pen", "", "");
+    productButIMark.style.pointerEvents = "none";
     const productButIDel = createElement("i", "fa-solid fa-trash", "", "");
     productButIDel.style.pointerEvents = "none";
 
@@ -98,14 +102,36 @@ for (let i = 0; i < products.length; i++) {
 }
 const remainingProduct = function () {
     list.innerHTML = "";
-  
+
     products.forEach(function (findingProduct) {
-  
-      const productItem = renderProduct(findingProduct);
-      list.append(productItem);
+
+        const productItem = renderProduct(findingProduct);
+        list.append(productItem);
     });
-  }
-  
+}
+const addForm = document.querySelector("#modal-form");
+const formSelect = document.querySelector("#product-manufacturer");
+const formEditSelect = document.querySelector("#edit-product-manufacturer")
+const addProductModalEl = document.querySelector("#edit-student-modal");
+const addProductModal = new bootstrap.Modal(addProductModalEl);
+
+for (let i = 0; i < manufacturers.length; i++) {
+    const formOption = createElement("option", "", manufacturers[i].name, "");
+    formSelect.append(formOption);
+}
+for (let i = 0; i < manufacturers.length; i++) {
+    const formOption = createElement("option", "", manufacturers[i].name, "");
+    formEditSelect.append(formOption);
+}
+const nameEdit = document.querySelector("#edit-product-title")
+const priceEdit = document.querySelector("#edit-price");
+const manufacterEdit = document.querySelector("#edit-product-manufacturer");
+const benefitEdit = document.querySelector("#edit-benefits");
+
+const editForm = document.querySelector("#edit-modal-form");
+const editProductModalEl = document.querySelector("#edit-product-modal");
+const editProductModal = new bootstrap.Modal(editProductModalEl);
+
 
 list.addEventListener('click', function (evt) {
     if (evt.target.matches(".btn-danger")) {
@@ -117,18 +143,20 @@ list.addEventListener('click', function (evt) {
         products.splice(clickedBtnDelIndex, 1);
 
         remainingProduct();
+    } else if (evt.target.matches(".btn-secondary")) {
+        const clickedBtnEdit = +evt.target.dataset.editing;
+
+        const clickedBtnEditIndex = products.find(function (findedProductIndex) {
+            return findedProductIndex.id == clickedBtnEdit;
+        })
+        nameEdit.value = clickedBtnEditIndex.title;
+        priceEdit.value = clickedBtnEditIndex.price;
+        manufacterEdit.value = clickedBtnEditIndex.manufacturers;
+        benefitEdit.value = clickedBtnEditIndex.benefits;
+
+        editForm.setAttribute("data-editing-id", clickedBtnEditIndex.id);
     }
 })
-
-
-const addForm = document.querySelector("#modal-form");
-const formSelect = document.querySelector("#product-manufacturer");
-const addProductModalEl = document.querySelector("#edit-student-modal");
-const addProductModal = new bootstrap.Modal(addProductModalEl);
-for (let i = 0; i < manufacturers.length; i++) {
-    const formOption = createElement("option", "", manufacturers[i].name, "");
-    formSelect.append(formOption);
-}
 
 addForm.addEventListener("submit", function (evt) {
     evt.preventDefault();
@@ -156,3 +184,32 @@ addForm.addEventListener("submit", function (evt) {
     renderProduct(product)
 
 });
+
+editForm.addEventListener('submit', function (evt) {
+    evt.preventDefault()
+    const editingId = +evt.target.dataset.editingId
+
+    const nameValue = nameEdit.value;
+    const priceValue = priceEdit.value;
+    const benefitValue = benefitEdit.value.split(" ");
+    const manufacterValue = manufacterEdit.value;
+
+    const product = {
+        id: Math.floor(Math.random() * 1000),
+        title: nameValue,
+        img: "https://picsum.photos/300/200",
+        price: priceValue,
+        model: manufacterValue,
+        addedDate: new Date().toISOString(),
+        benefits: benefitValue
+    }
+    const editingProductIndex = products.findIndex(function (findProducts) {
+        return findProducts.id == editingId;
+    })
+
+    products.splice(editingProductIndex, 1, product);
+    
+    editForm.reset();
+    editProductModal.hide();
+    remainingProduct();
+})
