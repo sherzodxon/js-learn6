@@ -43,7 +43,7 @@ const renderProduct = function (product) {
     const productImg = createElement("img", "card-img-top", "", img);
     const productDiv = createElement("div", "card-body", "", "");
 
-    const productTitle = createElement("h3", "card-title",title, "");
+    const productTitle = createElement("h3", "card-title", title, "");
     const productTextOne = createElement("p", "text fw-bocardld", SUM, "");
     const productTextDel = createElement("s", "", " 2.000.000 so'm", "");
     const productTextTwo = createElement("p", "card-text", "", "");
@@ -69,8 +69,10 @@ const renderProduct = function (product) {
     const productButDiv = createElement("div", "position-absolute top-0 end-0 d-flex", "", "");
     const productButMark = createElement("button", "btn rounded-0 btn-secondary", "", "");
     const productButDel = createElement("button", "btn rounded-0 btn-danger", "", "");
+    productButDel.setAttribute("data-delete", id);
     const productButIMark = createElement("i", "fa-solid fa-pen", "", "");
     const productButIDel = createElement("i", "fa-solid fa-trash", "", "");
+    productButIDel.style.pointerEvents = "none";
 
     productButMark.append(productButIMark);
     productButDel.append(productButIDel);
@@ -84,16 +86,39 @@ const renderProduct = function (product) {
     productCard.append(productDiv)
     productItem.append(productCard);
     list.append(productItem)
-    
- return  productItem;
+
+    return productItem;
 }
 for (let i = 0; i < products.length; i++) {
     const currentProduct = products[i];
-    
+
     const productItem = renderProduct(currentProduct);
-  
+
     list.append(productItem);
+}
+const remainingProduct = function () {
+    list.innerHTML = "";
+  
+    products.forEach(function (findingProduct) {
+  
+      const productItem = renderProduct(findingProduct);
+      list.append(productItem);
+    });
   }
+  
+
+list.addEventListener('click', function (evt) {
+    if (evt.target.matches(".btn-danger")) {
+        const clickedBtnDel = +evt.target.dataset.delete;
+
+        const clickedBtnDelIndex = products.findIndex(function (findedProductIndex) {
+            return findedProductIndex.id == clickedBtnDel;
+        })
+        products.splice(clickedBtnDelIndex, 1);
+
+        remainingProduct();
+    }
+})
 
 
 const addForm = document.querySelector("#modal-form");
@@ -114,8 +139,9 @@ addForm.addEventListener("submit", function (evt) {
     const priceValue = elements.price.value;
     const manufacterValue = elements["product-manufacturer"].value;
     const benefitValue = elements.benefits.value.split(" ");
+
     const product = {
-        id: 125,
+        id: Math.floor(Math.random() * 1000),
         title: nameValue,
         img: "https://picsum.photos/300/200",
         price: priceValue,
@@ -126,7 +152,7 @@ addForm.addEventListener("submit", function (evt) {
     products.push(product);
     addForm.reset();
     addProductModal.hide();
-    
+
     renderProduct(product)
-    console.log(list)
+
 });
