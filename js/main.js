@@ -27,7 +27,7 @@ const renderProduct = function (product) {
         price,
         model,
         addedDate,
-        benefits 
+        benefits
     } = product
 
     currentProduct = product;
