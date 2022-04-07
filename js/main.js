@@ -27,13 +27,13 @@ const renderProduct = function (product) {
         price,
         model,
         addedDate,
-        benefits
+        benefits 
     } = product
 
     currentProduct = product;
 
-    const PRICE = Math.floor(currentProduct.price / 1000000).toFixed(0);
-    const LEFT = Math.floor((currentProduct.price % 1000000) / 1000).toFixed(3);
+    const PRICE = Math.floor(price / 1000000).toFixed(0);
+    const LEFT = Math.floor((price % 1000000) / 1000).toFixed(3);
     const SUM = `${PRICE}.${LEFT} so'm`;
 
     const productItem = createElement("li", "col-4", "", "");
@@ -208,7 +208,7 @@ editForm.addEventListener('submit', function (evt) {
     })
 
     products.splice(editingProductIndex, 1, product);
-    
+
     editForm.reset();
     editProductModal.hide();
     remainingProduct();
