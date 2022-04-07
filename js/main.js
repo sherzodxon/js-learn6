@@ -213,3 +213,30 @@ editForm.addEventListener('submit', function (evt) {
     editProductModal.hide();
     remainingProduct();
 })
+
+const input = document.querySelector("#benefits");
+const inputList = document.querySelector("#split-list");
+const inputBenefits = [];
+
+const splitingInput = function () {
+    inputList.innerHTML = "";
+}
+
+input.addEventListener("input", function () {
+
+    const splittedValue = input.value.trim().split(" ");
+    if (splittedValue.length == 2) {
+        inputBenefits.push(splittedValue[0]);
+        input.value = "";
+    }
+
+    splitingInput();
+    
+    for (let i = 0; i < inputBenefits.length; i++) {
+        const createdBtn = createElement("button", "btn btn-sm badge rounded-pill btn-danger", inputBenefits[i], "");
+        const inputItem = createElement("li", "me-1 mb-1", "", "");
+        inputItem.append(createdBtn);
+        inputList.append(inputItem);
+    }
+
+})
