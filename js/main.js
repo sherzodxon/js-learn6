@@ -219,16 +219,16 @@ const inputList = document.querySelector("#split-list");
 const inputBenefits = [];
 
 const splitingInput = function () {
-    inputList.innerHTML = "";
-}
-
-input.addEventListener("input", function () {
-
     const splittedValue = input.value.trim().split(" ");
     if (splittedValue.length == 2) {
         inputBenefits.push(splittedValue[0]);
         input.value = "";
-    }
+    } 
+
+    inputList.innerHTML = "";
+}
+
+input.addEventListener("input", function () {
 
     splitingInput();
     
