@@ -93,19 +93,23 @@ const renderProduct = function (product) {
 
     return productItem;
 }
+
+let showingProducts = products.slice();
+const sumCount = document.querySelector("#count");
+
 for (let i = 0; i < products.length; i++) {
     const currentProduct = products[i];
-
+    sumCount.textContent =`Count:${showingProducts.length}`;
     const productItem = renderProduct(currentProduct);
 
     list.append(productItem);
 }
-const remainingProduct = function () {
+const remainingProduct = function (findingProduct = showingProducts ) {
     list.innerHTML = "";
+    sumCount.textContent =`Count:${showingProducts.length}`;
+    findingProduct.forEach(function (products) {
 
-    products.forEach(function (findingProduct) {
-
-        const productItem = renderProduct(findingProduct);
+        const productItem = renderProduct(products);
         list.append(productItem);
     });
 }
@@ -141,6 +145,7 @@ list.addEventListener('click', function (evt) {
             return findedProductIndex.id == clickedBtnDel;
         })
         products.splice(clickedBtnDelIndex, 1);
+        showingProducts.splice(clickedBtnDelIndex,1);
 
         remainingProduct();
     } else if (evt.target.matches(".btn-secondary")) {
@@ -178,10 +183,12 @@ addForm.addEventListener("submit", function (evt) {
         benefits: benefitValue
     }
     products.push(product);
+    showingProducts.push(product);
+
     addForm.reset();
     addProductModal.hide();
 
-    renderProduct(product)
+    renderProduct(product);
 
 });
 
@@ -203,11 +210,12 @@ editForm.addEventListener('submit', function (evt) {
         addedDate: new Date().toISOString(),
         benefits: benefitValue
     }
-    const editingProductIndex = products.findIndex(function (findProducts) {
+    const editingProductIndex = showingProducts.findIndex(function (findProducts) {
         return findProducts.id == editingId;
     })
 
     products.splice(editingProductIndex, 1, product);
+    showingProducts.splice(editingProductIndex,1,product);
 
     editForm.reset();
     editProductModal.hide();
@@ -219,11 +227,11 @@ const inputList = document.querySelector("#split-list");
 const inputBenefits = [];
 
 const splitingInput = function () {
-    const splittedValue = input.value.trim().split(" ");
+    const splittedValue = input.value .split(" ");
     if (splittedValue.length == 2) {
         inputBenefits.push(splittedValue[0]);
         input.value = "";
-    } 
+    }
 
     inputList.innerHTML = "";
 }
@@ -231,7 +239,7 @@ const splitingInput = function () {
 input.addEventListener("input", function () {
 
     splitingInput();
-    
+
     for (let i = 0; i < inputBenefits.length; i++) {
         const createdBtn = createElement("button", "btn btn-sm badge rounded-pill btn-danger", inputBenefits[i], "");
         const inputItem = createElement("li", "me-1 mb-1", "", "");
@@ -239,4 +247,31 @@ input.addEventListener("input", function () {
         inputList.append(inputItem);
     }
 
+})
+
+const filterform = document.querySelector(".filter-form");
+
+filterform.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    const elements = evt.target.elements;
+    
+    const formValue = elements.from.value
+    const toValue = elements.to.value;
+    const searchValue =elements.search.value;
+
+    showingProducts = products.filter(function (filtiringproduct) {
+        const productMarkPercent = filtiringproduct.price;
+        return productMarkPercent >= formValue;
+    }).filter(function(filtiringproduct){
+        const productMarkPercent = filtiringproduct.price;
+        return !toValue? true: productMarkPercent <= toValue;   
+    }).filter(function(filtiringproduct){
+        const searchRegExp = new RegExp(searchValue, "gi");
+        const nameTitle = filtiringproduct.title
+       return nameTitle.match(searchRegExp); 
+    })
+
+    remainingProduct();
+    console.log(filterProduct)
 })
