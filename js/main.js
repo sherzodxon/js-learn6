@@ -99,14 +99,14 @@ const sumCount = document.querySelector("#count");
 
 for (let i = 0; i < products.length; i++) {
     const currentProduct = products[i];
-    sumCount.textContent =`Count:${showingProducts.length}`;
+    sumCount.textContent = `Count:${showingProducts.length}`;
     const productItem = renderProduct(currentProduct);
 
     list.append(productItem);
 }
-const remainingProduct = function (findingProduct = showingProducts ) {
+const remainingProduct = function (findingProduct = showingProducts) {
     list.innerHTML = "";
-    sumCount.textContent =`Count:${showingProducts.length}`;
+    sumCount.textContent = `Count:${showingProducts.length}`;
     findingProduct.forEach(function (products) {
 
         const productItem = renderProduct(products);
@@ -145,7 +145,7 @@ list.addEventListener('click', function (evt) {
             return findedProductIndex.id == clickedBtnDel;
         })
         products.splice(clickedBtnDelIndex, 1);
-        showingProducts.splice(clickedBtnDelIndex,1);
+        showingProducts.splice(clickedBtnDelIndex, 1);
 
         remainingProduct();
     } else if (evt.target.matches(".btn-secondary")) {
@@ -215,7 +215,7 @@ editForm.addEventListener('submit', function (evt) {
     })
 
     products.splice(editingProductIndex, 1, product);
-    showingProducts.splice(editingProductIndex,1,product);
+    showingProducts.splice(editingProductIndex, 1, product);
 
     editForm.reset();
     editProductModal.hide();
@@ -227,7 +227,7 @@ const inputList = document.querySelector("#split-list");
 const inputBenefits = [];
 
 const splitingInput = function () {
-    const splittedValue = input.value .split(" ");
+    const splittedValue = input.value.split(" ");
     if (splittedValue.length == 2) {
         inputBenefits.push(splittedValue[0]);
         input.value = "";
@@ -255,23 +255,48 @@ filterform.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
     const elements = evt.target.elements;
-    
+
     const formValue = elements.from.value
     const toValue = elements.to.value;
-    const searchValue =elements.search.value;
+    const searchValue = elements.search.value;
+    const sortValue = elements.sortby.value;
 
-    showingProducts = products.filter(function (filtiringproduct) {
-        const productMarkPercent = filtiringproduct.price;
-        return productMarkPercent >= formValue;
-    }).filter(function(filtiringproduct){
-        const productMarkPercent = filtiringproduct.price;
-        return !toValue? true: productMarkPercent <= toValue;   
-    }).filter(function(filtiringproduct){
-        const searchRegExp = new RegExp(searchValue, "gi");
-        const nameTitle = filtiringproduct.title
-       return nameTitle.match(searchRegExp); 
-    })
+    showingProducts = products
+        .sort(function (a, b) {
+            switch (sortValue) {
+                case "1":
+                    if (a.title > b.title) {
+                        return 1
+                    } else if (a.title < b.title) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                    case "2":
+                        return b.price - a.price;
+                    case "3":
+                        return a.price - b.price;
+                    case "4":
+                        return new Date(a.addedDate).getTime() - new Date(b.addedDate).getTime( );
+                    default:
+                        break;
+
+            }
+
+        })
+        .filter(function (filtiringproduct) {
+
+            const productMarkPercent = filtiringproduct.price;
+            return productMarkPercent >= formValue;
+        }).filter(function (filtiringproduct) {
+            const productMarkPercent = filtiringproduct.price;
+            return !toValue ? true : productMarkPercent <= toValue;
+        }).filter(function (filtiringproduct) {
+            const searchRegExp = new RegExp(searchValue, "gi");
+            const nameTitle = filtiringproduct.title
+            return nameTitle.match(searchRegExp);
+        })
 
     remainingProduct();
-    console.log(filterProduct)
+
 })
