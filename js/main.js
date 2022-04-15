@@ -19,6 +19,8 @@ const showDate = function (dateString) {
 }
 const list = document.querySelector("#product-list");
 
+const productTemplate = document.querySelector("#product-template");
+
 const renderProduct = function (product) {
     const {
         id,
@@ -36,59 +38,90 @@ const renderProduct = function (product) {
     const LEFT = Math.floor((price % 1000000) / 1000).toFixed(3);
     const SUM = `${PRICE}.${LEFT} so'm`;
 
-    const productItem = createElement("li", "col-4", "", "");
+    const productItem = productTemplate.content.cloneNode(true);
 
-    const productCard = createElement("div", "card")
+    const productDivCard = productItem.querySelector(".product-card");
+    productDivCard.querySelector(".card-img-top").src = img;
 
-    const productImg = createElement("img", "card-img-top", "", img);
-    const productDiv = createElement("div", "card-body", "", "");
+    const productDivCardBody = productDivCard.querySelector(".div-body");
+    productDivCardBody.querySelector(".card-title").textContent = title;
+    productDivCardBody.querySelector(".fw-template").textContent = SUM;
+    productDivCardBody.querySelector(".set");
+    productDivCardBody.querySelector(".bg-template").textContent = model;
+    productDivCardBody.querySelector(".card-text").textContent = showDate(addedDate);
 
-    const productTitle = createElement("h3", "card-title", title, "");
-    const productTextOne = createElement("p", "text fw-bocardld", SUM, "");
-    const productTextDel = createElement("s", "", " 2.000.000 so'm", "");
-    const productTextTwo = createElement("p", "card-text", "", "");
-    const productTextThree = createElement("p", "badge bg-success", model, "");
-    const productTextDate = createElement("p", "card-text", showDate(addedDate), "");
-
-    productTextTwo.append(productTextDel);
-
-    productDiv.append(productTitle);
-    productDiv.append(productTextOne);
-    productDiv.append(productTextTwo);
-    productDiv.append(productTextThree);
-    productDiv.append(productTextDate);
-
-    const productList = createElement("ul", "d-flex flex-wrap list-unstyled", "", "");
-
+    const productList = productDivCardBody.querySelector(".temp-list");
     for (j = 0; j < benefits.length; j++) {
         const currentBenefit = benefits[j];
         const productListItem = createElement("li", "badge bg-primary me-1 mb-1", currentBenefit, "");
         productList.append(productListItem);
     }
 
-    const productButDiv = createElement("div", "position-absolute top-0 end-0 d-flex", "", "");
-    const productButMark = createElement("button", "btn rounded-0 btn-secondary", "", "");
+    const productDivBtn =productDivCardBody.querySelector(".temp-btn-div");
+
+    const productButMark =productDivBtn.querySelector(".temp-edit");
+    productButMark.querySelector(".edit-pen").style.pointerEvents="none";
     productButMark.setAttribute("data-editing", id);
     productButMark.setAttribute("data-bs-toggle", "modal");
     productButMark.setAttribute("data-bs-target", "#edit-product-modal");
-    const productButDel = createElement("button", "btn rounded-0 btn-danger", "", "");
-    productButDel.setAttribute("data-delete", id);
-    const productButIMark = createElement("i", "fa-solid fa-pen", "", "");
-    productButIMark.style.pointerEvents = "none";
-    const productButIDel = createElement("i", "fa-solid fa-trash", "", "");
-    productButIDel.style.pointerEvents = "none";
 
-    productButMark.append(productButIMark);
-    productButDel.append(productButIDel);
-    productButDiv.append(productButMark);
-    productButDiv.append(productButDel);
+    const productButDel=productDivBtn.querySelector(".temp-delete");
+    productButDel.querySelector(".del-pen").style.pointerEvents="none";
+    
 
-    productDiv.append(productList);
-    productDiv.append(productButDiv);
+    // const productItem = createElement("li", "col-4", "", "");
 
-    productCard.append(productImg);
-    productCard.append(productDiv)
-    productItem.append(productCard);
+    // const productCard = createElement("div", "card")
+
+    // const productImg = createElement("img", "card-img-top", "", img);
+    // const productDiv = createElement("div", "card-body", "", "");
+
+    // const productTitle = createElement("h3", "card-title", title, "");
+    // const productTextOne = createElement("p", "text fw-bocardld", SUM, "");
+    // const productTextDel = createElement("s", "", " 2.000.000 so'm", "");
+    // const productTextTwo = createElement("p", "card-text", "", "");
+    // const productTextThree = createElement("p", "badge bg-success", model, "");
+    // const productTextDate = createElement("p", "card-text", showDate(addedDate), "");
+
+    // productTextTwo.append(productTextDel);
+
+    // productDiv.append(productTitle);
+    // productDiv.append(productTextOne);
+    // productDiv.append(productTextTwo);
+    // productDiv.append(productTextThree);
+    // productDiv.append(productTextDate);
+
+    // const productList = createElement("ul", "d-flex flex-wrap list-unstyled", "", "");
+
+    // for (j = 0; j < benefits.length; j++) {
+    //     const currentBenefit = benefits[j];
+    //     const productListItem = createElement("li", "badge bg-primary me-1 mb-1", currentBenefit, "");
+    //     productList.append(productListItem);
+    // }
+
+    // const productButDiv = createElement("div", "position-absolute top-0 end-0 d-flex", "", "");
+    // const productButMark = createElement("button", "btn rounded-0 btn-secondary", "", "");
+    // productButMark.setAttribute("data-editing", id);
+    // productButMark.setAttribute("data-bs-toggle", "modal");
+    // productButMark.setAttribute("data-bs-target", "#edit-product-modal");
+    // const productButDel = createElement("button", "btn rounded-0 btn-danger", "", "");
+    // productButDel.setAttribute("data-delete", id);
+    // const productButIMark = createElement("i", "fa-solid fa-pen", "", "");
+    // productButIMark.style.pointerEvents = "none";
+    // const productButIDel = createElement("i", "fa-solid fa-trash", "", "");
+    // productButIDel.style.pointerEvents = "none";
+
+    // productButMark.append(productButIMark);
+    // productButDel.append(productButIDel);
+    // productButDiv.append(productButMark);
+    // productButDiv.append(productButDel);
+
+    // productDiv.append(productList);
+    // productDiv.append(productButDiv);
+
+    // productCard.append(productImg);
+    // productCard.append(productDiv)
+    // productItem.append(productCard);
     list.append(productItem)
 
     return productItem;
@@ -138,7 +171,7 @@ const editProductModal = new bootstrap.Modal(editProductModalEl);
 
 
 list.addEventListener('click', function (evt) {
-    if (evt.target.matches(".btn-danger")) {
+    if (evt.target.matches(".temp-delete")) {
         const clickedBtnDel = +evt.target.dataset.delete;
 
         const clickedBtnDelIndex = products.findIndex(function (findedProductIndex) {
@@ -148,7 +181,7 @@ list.addEventListener('click', function (evt) {
         showingProducts.splice(clickedBtnDelIndex, 1);
 
         remainingProduct();
-    } else if (evt.target.matches(".btn-secondary")) {
+    } else if (evt.target.matches(".temp-edit")) {
         const clickedBtnEdit = +evt.target.dataset.editing;
 
         const clickedBtnEditIndex = products.find(function (findedProductIndex) {
@@ -277,7 +310,7 @@ filterform.addEventListener('submit', function (evt) {
                     case "3":
                         return a.price - b.price;
                     case "4":
-                        return new Date(a.addedDate).getTime() - new Date(b.addedDate).getTime( );
+                        return new Date(a.addedDate).getTime() - new Date(b.addedDate).getTime();
                     default:
                         break;
 

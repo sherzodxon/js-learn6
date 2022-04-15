@@ -68,33 +68,9 @@
           <h2 class="h4 mb-4">Products list</h2>
           <p id="count"></p>
         </div>
-        <ul id="product-list" class="row list-unstyled g-3"></ul>
-        <!-- <ul class="row list-unstyled g-3">
-          <li class="col-4">
-            <div class="card">
-              <img src="https://picsum.photos/300/200" alt="" class="card-img-top">
-              <div class="card-body">
-                <h3 class="card-title">Gadget title</h3>
-                <p class="text fw-bocardld"><mark>2.000.000</mark></p>
-                <p class="card-text"><s>2.000.000</s></p>
-                <p class="badge bg-success">Xiaomi (gadget firmasi)</p>
-                <p class="card-text">12.05.2022</p>
+        <ul id="product-list" class="row list-unstyled g-3">
 
-                <ul class="d-flex flex-wrap list-unstyled">
-                  <li class="badge bg-primary me-1 mb-1">8gb</li>
-                  <li class="badge bg-primary me-1 mb-1">128gb</li>
-                  <li class="badge bg-primary me-1 mb-1">Waterproof</li>
-                  <li class="badge bg-primary me-1 mb-1">Falon yaxshi tarafi</li>
-                </ul>
-
-                <div class="position-absolute top-0 end-0 d-flex">
-                  <button class="btn rounded-0 btn-secondary"><i class="fa-solid fa-pen"></i></button>
-                  <button class="btn rounded-0 btn-danger"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul> -->
+        </ul>
       </section>
     </div>
   </div>
@@ -191,6 +167,28 @@
     </div>
   </div>
 </div>
+<template id="product-template">
+  <li class="col-4">
+    <div class="card product-card">
+      <img src="" alt="img" class="card-img-top">
+      <div class="card-body div-body">
+        <h3 class="card-title"></h3>
+        <p class="text fw-bocardld fw-template"></p>
+        <p class="card-text set"><s>2.000.000</s></p>
+        <p class="badge bg-success bg-template"></p>
+        <p class="card-text"></p>
+
+        <ul class="d-flex flex-wrap list-unstyled temp-list">
+        </ul>
+
+        <div class="position-absolute top-0 end-0 d-flex temp-btn-div">
+          <button class="btn rounded-0 btn-secondary temp-edit"><i class="fa-solid fa-pen edit-pen"></i></button>
+          <button class="btn rounded-0 btn-danger temp-delete"><i class="fa-solid fa-trash del-pen"></i></button>
+        </div>
+      </div>
+    </div>
+  </li>
+</template>
 
   <script src="js/bootstrap.bundle.min.js"></script>
 
